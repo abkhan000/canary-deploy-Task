@@ -24,10 +24,32 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
+    - name: Check Docker Hub repository and create if not exists
+      run: |
+        # Extract repository name from DOCKER_HUB_REPO
+        REPO_NAME=$(echo $DOCKER_HUB_REPO | cut -d'/' -f2)
+        
+        # Check if repository exists
+        if ! curl --silent -f -lSL "https://hub.docker.com/v2/repositories/$DOCKER_HUB_USERNAME/$REPO_NAME" > /dev/null 2>&1; then
+          echo "Repository does not exist. Creating it..."
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -H "Authorization: JWT ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" \
+            -d '{"namespace":"'"$DOCKER_HUB_USERNAME"'","name":"'"$REPO_NAME"'","is_private":false,"description":"Created by GitHub Actions"}' \
+            "https://hub.docker.com/v2/repositories/"
+        else
+          echo "Repository already exists."
+        fi
+
     - name: Build and push Docker image
       run: |
-        docker build -t ${DOCKER_HUB_REPO}:latest .
-        docker push ${DOCKER_HUB_REPO}:latest
+        if [ -z "$DOCKER_HUB_REPO" ]; then
+          echo "Error: DOCKER_HUB_REPO is empty or not set"
+          exit 1
+        fi
+        echo "Building image: ${DOCKER_HUB_REPO}:latest"
+        docker build -t "${DOCKER_HUB_REPO}:latest" .
+        docker push "${DOCKER_HUB_REPO}:latest"
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
