@@ -66,10 +66,12 @@ jobs:
       run: |
         sed -i 's|congtaojiang/whoami-nodejs-express|${{ env.DOCKER_HUB_REPO }}|' kubernetes/whoami-deployment.yaml
         kubectl apply -f kubernetes/whoami-deployment.yaml
-        kubectl apply -f kubernetes/whoami-deployment-canary.yaml
         kubectl apply -f kubernetes/whoami-service-canary.yaml
+        kubectl apply -f kubernetes/whoami-deployment-canary.yaml
+        
 
     - name: Force update deployments
       run: |
         kubectl rollout restart deployment/whoami-deployment-v1
         kubectl rollout restart deployment/whoami-deployment-canary
+ 
