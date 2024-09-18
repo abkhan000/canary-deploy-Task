@@ -19,5 +19,5 @@ spec:
         image: congtaojiang/whoami-nodejs-express:latest
         ports:
         - containerPort: 8000
-  
+
  
