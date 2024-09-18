@@ -42,7 +42,7 @@ spec:
         image: emilevauge/whoami:latest
         ports:
         - containerPort: 80
-
+ 
 ---
 apiVersion: v1
 kind: Service
