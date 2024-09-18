@@ -19,3 +19,4 @@ spec:
         - containerPort: 8080
         command: ["/bin/sh"]
         args: ["-c", "echo Listening on port $(cat /tmp/port) && exec node /app/server.js"]
+ 
