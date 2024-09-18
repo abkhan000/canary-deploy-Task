@@ -27,7 +27,9 @@ jobs:
 
     - name: Update kubeconfig
       run: |
-        aws eks get-token --cluster-name $(aws eks list-clusters --query clusters[0] --output text) | kubectl apply -f - --validate=false
+        aws eks update-kubeconfig --name k8s-cluster --region ap-northeast-1
+        aws eks get-token --cluster-name k8s-cluster --region ap-northeast-1
+        
 
     - name: Deploy to EKS
       run: |
