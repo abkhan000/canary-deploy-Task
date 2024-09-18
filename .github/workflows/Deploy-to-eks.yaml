@@ -38,8 +38,8 @@ jobs:
 
     - name: Wait for deployment
       run: |
-        kubectl rollout status deployment/whoami-deployment --validate=false
-        kubectl rollout status deployment/whoami-canary --validate=false
+        kubectl rollout status deployment/whoami-deployment
+        kubectl rollout status deployment/whoami-canary 
   
   docker-push:
     name: Push Docker Image to Docker Hub
