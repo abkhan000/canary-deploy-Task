@@ -61,11 +61,8 @@ jobs:
 
     - name: Deploy to EKS
       run: |
-        # Update the stable deployment
-        kubectl set image deployment/myapp-stable myapp=${DOCKER_HUB_REPO}:latest
-        
-        # Update the canary deployment (using emilevauge/whoami image)
-        kubectl set image deployment/myapp-canary myapp=emilevauge/whoami:latest
+        sed -i 's|congtaojiang/whoami-nodejs-express|${{ env.DOCKER_HUB_REPO }}|' kubernetes/deployment.yaml
+        kubectl apply -f kubernetes/deployment.yaml
         
         # Force update deployments
         kubectl rollout restart deployment/myapp-stable
