@@ -66,7 +66,7 @@ jobs:
       run: |
         sed -i 's|congtaojiang/whoami-nodejs-express|${{ env.DOCKER_HUB_REPO }}|' kubernetes/deployment.yaml
         kubectl apply -f kubernetes/deployment.yaml
-
+        kubectl apply -f kubernetes/sevice.yaml
     - name: Force update deployment
       run: |
         kubectl rollout restart deployment/whoami-deployment
