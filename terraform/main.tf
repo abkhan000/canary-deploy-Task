@@ -12,7 +12,7 @@ data "aws_subnets" "default" {
     values = [data.aws_vpc.default.id]
   }
 }
-
+ 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 19.0"
