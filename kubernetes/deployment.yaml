@@ -17,7 +17,7 @@ spec:
         image: congtaojiang/whoami-nodejs-express:latest
         ports:
         - containerPort: 8080
-        command: ["/bin/sh"]
-        args: ["-c", "echo Listening on port $(cat /tmp/port) && exec node /app/server.js"]
-  
-   
+        env:
+        - name: PORT
+          value: "8080"  # Set the expected port here
+        command: ["node", "/app/server.js"]
